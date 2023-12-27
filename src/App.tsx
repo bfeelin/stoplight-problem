@@ -22,13 +22,13 @@ const stoplightStates:StoplightState[] = [
 ]
 
 function App() {
-  const [stoplightState, setStoplightState] = useState<number>(0)
+  const [stoplightState, setStoplightState] = useState<StoplightState>(stoplightStates[0])
 
   useEffect(() => {
-    const nextState:StoplightState = stoplightStates[(stoplightState+1) % stoplightStates.length]
+    const nextState:StoplightState = stoplightStates[(stoplightState.value+1) % stoplightStates.length]
     const timeoutId = setTimeout(() => {
-      setStoplightState(nextState.value);
-    }, nextState.delay);
+      setStoplightState(nextState);
+    }, stoplightState.delay);
 
     return () => clearTimeout(timeoutId);
   }, [stoplightState])
@@ -36,13 +36,13 @@ function App() {
   return (
     <>
       <div className='container'>
-        <div className='light' style={{backgroundColor: stoplightState === 0 ? 'red' : ''}}>
+        <div className='light' style={{backgroundColor: stoplightState.value === 0 ? 'red' : ''}}>
 
         </div>
-        <div className='light'  style={{backgroundColor: stoplightState === 1 ? 'orange' : ''}}>
+        <div className='light'  style={{backgroundColor: stoplightState.value === 1 ? 'orange' : ''}}>
           
         </div>
-        <div className='light'  style={{backgroundColor: stoplightState === 2 ? 'green' : ''}}>
+        <div className='light'  style={{backgroundColor: stoplightState.value === 2 ? 'green' : ''}}>
           
         </div>
       </div>
