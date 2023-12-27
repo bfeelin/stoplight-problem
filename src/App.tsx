@@ -2,30 +2,31 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 interface StoplightState {
-  value: number,
-  delay: number
+  delay: number,
+  value: string
 }
 
 const stoplightStates:StoplightState[] = [
   {
-    value: 0,
-    delay: 5000
+    delay: 5000,
+    value: 'red'
   },
   {
-    value: 1,
-    delay: 2000
+    delay: 2000,
+    value: 'orange'
   },
   {
-    value: 2,
-    delay: 5000
-  }
+    delay: 5000,
+    value: 'green'
+  },
 ]
 
 function App() {
   const [stoplightState, setStoplightState] = useState<StoplightState>(stoplightStates[0])
 
   useEffect(() => {
-    const nextState:StoplightState = stoplightStates[(stoplightState.value+1) % stoplightStates.length]
+    const thisStateIndex:number = stoplightStates.findIndex((state) => state.value === stoplightState.value)
+    const nextState:StoplightState = stoplightStates[(thisStateIndex+1) % stoplightStates.length]
     const timeoutId = setTimeout(() => {
       setStoplightState(nextState);
     }, stoplightState.delay);
@@ -36,15 +37,11 @@ function App() {
   return (
     <>
       <div className='container'>
-        <div className='light' style={{backgroundColor: stoplightState.value === 0 ? 'red' : ''}}>
+        {stoplightStates?.map((light) => (
+          <div className='light' style={{backgroundColor: stoplightState.value === light.value ? light.value : ''}}>
+          </div>
+        ))}
 
-        </div>
-        <div className='light'  style={{backgroundColor: stoplightState.value === 1 ? 'orange' : ''}}>
-          
-        </div>
-        <div className='light'  style={{backgroundColor: stoplightState.value === 2 ? 'green' : ''}}>
-          
-        </div>
       </div>
 
     </>
